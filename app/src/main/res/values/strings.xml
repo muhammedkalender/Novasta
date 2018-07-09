@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Novasta</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="header1">Güncel</string>
+    <string name="header">Haber ve Referanslar</string>
+
+    <string name="nothing_header">Üzgünüz, Aradığınız şeyi bulamadık.</string>
+    <string name="nothing">Ama aramaya devam edebilirsiniz.</string>
+
+    <string name="news">Haberler</string>
+    <string name="reference">Referanslar</string>
+
+    <string name="main_menu">Ana Menü</string>
+
+    <string name="no_cache">İnternet bağlantınız yok. En azından bir kere internet bağlantısı ile içeriği açmalısınız.</string>
+
+    <string name="write_here">Buraya yazınız...</string>
+    <string name="loading">Yükleniyor, Lütfen bekleyin ...</string>
+    <string name="reference_title">Referanslarımız</string>
+    <string name="news_title">Haberler</string>
+    <string name="need_network">İnternet bağlantısına ihtiyaç var.</string>
+</resources>
