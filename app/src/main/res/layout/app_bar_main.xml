@@ -1,33 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Main">
 
-    <android.support.design.widget.AppBarLayout
+    <RelativeLayout
+        android:id="@+id/rlTOP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="60dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:src="@mipmap/ic_logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitXY" />
 
-    </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+        <ImageView
+            android:id="@+id/ivMap"
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@id/ivWP"
+            android:src="@mipmap/ic_map" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <ImageView
+            android:id="@+id/ivWP"
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:layout_toLeftOf="@id/ivSearch"
+            android:src="@mipmap/ic_tel" />
 
-</android.support.design.widget.CoordinatorLayout>
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:src="@mipmap/ic_search" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/rlTOP"
+        android:id="@+id/rlArea"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <include layout="@layout/content_main" /></RelativeLayout>
+
+
+
+</RelativeLayout>

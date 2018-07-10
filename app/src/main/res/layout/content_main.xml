@@ -1,17 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Main"
+    android:clickable="true"
     android:background="@color/background"
-    tools:showIn="@layout/app_bar_main">
+    android:layout_height="match_parent">
 
-    <WebView
-        android:background="@color/webview"
-        android:id="@+id/wvbrowser"
+
+    <ImageView
+        android:id="@+id/ivHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivHeader">
+
+        <TextView
+            android:id="@+id/tvHeader1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:background="@color/green"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:text="@string/header1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_toEndOf="@id/tvHeader1"
+            android:background="@color/green"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:textSize="18sp"
+            android:layout_toRightOf="@id/tvHeader1" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcList"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlHeader" />
+
+    <RelativeLayout
+        android:id="@+id/wvfather"
+
+        android:background="@color/text"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/wvbrowser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

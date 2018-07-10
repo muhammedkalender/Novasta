@@ -127,13 +127,25 @@ public class cdb extends SQLiteOpenHelper {
 
     int TYPE_CATEGORISES = 1, TYPE_NEWS = 2, TYPE_REFERENCES = 3;
 
-    void cache(int pid, int ptype) {
-        if (ptype == 1) {
-            cacheCategorises(pid, true);
-        } else if (ptype == 2) {
-            cacheNews(pid, true);
-        } else if (ptype == 3) {
-            cacheReferences(pid, true);
+    boolean cache(int pid, int ptype) {
+        if (ptype == TYPE_CATEGORISES) {
+            return cacheCategorises(pid);
+        } else if (ptype == TYPE_NEWS) {
+            return cacheNews(pid);
+        } else if (ptype == TYPE_REFERENCES) {
+            return cacheReferences(pid);
+        }
+
+        return false;
+    }
+
+    void cache(int pid, int ptype, boolean pedit) {
+        if (ptype == TYPE_CATEGORISES) {
+            cacheCategorises(pid, pedit);
+        } else if (ptype == TYPE_NEWS) {
+            cacheNews(pid, pedit);
+        } else if (ptype == TYPE_REFERENCES) {
+            cacheReferences(pid, pedit);
         }
     }
 
@@ -167,6 +179,42 @@ public class cdb extends SQLiteOpenHelper {
 
     void delNews(int ID) {
         exec("UPDATE news SET cache = 0 WHERE id = " + ID);
+    }
+
+    boolean description(int pid, int ptype, String pdata) {
+        try {
+            if (ptype == TYPE_CATEGORISES) {
+                return exec("UPDATE categorises SET description = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            } else if (ptype == TYPE_REFERENCES) {
+                return exec("UPDATE 'references' SET description = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            } else if (ptype == TYPE_NEWS) {
+                return exec("UPDATE news SET description = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            }
+
+            Log.e("asda",pid+"--"+ptype+"--)"+pdata);
+
+            return false;
+        } catch (Exception e) {
+            clib.err(6000, e);
+            return false;
+        }
+    }
+
+    boolean content(int pid, int ptype, String pdata) {
+        try {
+            if (ptype == TYPE_CATEGORISES) {
+                return exec("UPDATE categorises SET content = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            } else if (ptype == TYPE_REFERENCES) {
+                return exec("UPDATE 'references' SET content = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            } else if (ptype == TYPE_NEWS) {
+                return exec("UPDATE news SET content = '" + clib.encode(pdata) + "' WHERE id = " + pid);
+            }
+
+            return false;
+        } catch (Exception e) {
+            clib.err(6100, e);
+            return false;
+        }
     }
 
     boolean cacheReferences(int ID) {

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Novasta</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -22,7 +21,7 @@
     <string name="no_cache">İnternet bağlantınız yok. En azından bir kere internet bağlantısı ile içeriği açmalısınız.</string>
 
     <string name="write_here">Buraya yazınız...</string>
-    <string name="loading">Yükleniyor, Lütfen bekleyin ...</string>
+<string name="loading">Yükleniyor, Lütfen bekleyin ...</string>
     <string name="reference_title">Referanslarımız</string>
     <string name="news_title">Haberler</string>
     <string name="need_network">İnternet bağlantısına ihtiyaç var.</string>

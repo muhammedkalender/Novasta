@@ -1,6 +1,8 @@
 package tr.com.novasta.novasta;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -35,7 +37,7 @@ public class clib {
             Glide.with(context).load(URL).into(VIEW);
             return true;
         } catch (Exception e) {
-          err(2596, e);
+            err(2596, e);
             return false;
         }
     }
@@ -43,7 +45,7 @@ public class clib {
     public static void err(int ERR_ID, Exception E, String DESC) {
         try {
             Log.e("ERR_" + ERR_ID, E.getMessage() + "-" + DESC);
-           //todo FirebaseCrash.report(E);
+            //todo FirebaseCrash.report(E);
         } catch (Exception ex) {
 
         }
@@ -94,16 +96,16 @@ public class clib {
         }
     }
 
-    public static String urlencode(String TEXT){
+    public static String urlencode(String TEXT) {
         try {
             TEXT = TEXT.replace("&", "_AND_");
             TEXT = TEXT.replace("=", "_EQUAL_");
-            TEXT = TEXT.replace("?","_SORU_");
+            TEXT = TEXT.replace("?", "_SORU_");
 
 
             return TEXT;
-        }catch (Exception e){
-            err(2569,e);
+        } catch (Exception e) {
+            err(2569, e);
             return TEXT;
         }
     }
@@ -140,12 +142,12 @@ public class clib {
             }
 
             String result = TEXT.replace("___!SINGLE_QUOTES!___", "'");
-            result = result.replaceAll("___!QUOTES!___","\"");
-            result = result.replaceAll("___!LESS!___","<");
-            result = result.replaceAll("___!MORE!___",">");
-            result = result.replaceAll("___!HASTAG!___","#");
-            result = result.replaceAll("___!SEMICOLON!___",";");
-            result = result.replaceAll("___!TWO_POINT!___",":");
+            result = result.replaceAll("___!QUOTES!___", "\"");
+            result = result.replaceAll("___!LESS!___", "<");
+            result = result.replaceAll("___!MORE!___", ">");
+            result = result.replaceAll("___!HASTAG!___", "#");
+            result = result.replaceAll("___!SEMICOLON!___", ";");
+            result = result.replaceAll("___!TWO_POINT!___", ":");
             result = result.replaceAll("___!DOUBLE_TRE!___", "--");
             result = result.replaceAll("___!QUOTES_ALT!___", "&quot;");
             result = result.replaceAll("___!SINGLE_QUOTES_ALT!___", "&#039;");
@@ -231,7 +233,7 @@ public class clib {
 
             return text;
         } catch (OutOfMemoryError e) {
-           err(8633, e);
+            err(8633, e);
             return "";
         } catch (FileNotFoundException e) {
             err(8663, e);
