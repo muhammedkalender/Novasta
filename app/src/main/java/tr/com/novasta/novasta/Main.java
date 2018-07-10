@@ -732,11 +732,11 @@ public class Main extends AppCompatActivity
         try {
             if (webView == null) {
                 webView = findViewById(R.id.wvbrowser);
-                webView.getSettings().setAppCacheMaxSize(1024 * 50); //50 MB
+                webView.getSettings().setAppCacheEnabled(true);
+                webView.getSettings().setAppCacheMaxSize(1024 *1024* 50); //50 MB
                 webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setLoadsImagesAutomatically(true);
-                webView.setScrollX(0);
                 webView.setWebViewClient(new WebViewClient() {
 
                     @Override
@@ -819,19 +819,19 @@ public class Main extends AppCompatActivity
                             try {
                                 //todo
 
-                                if (!isInternetAvailable() && !db.cache(pid, ptype)) {
+                                if (!isInternetAvailable() && !db.cache(pid, ptype) && false) { //todo
                                     Snackbar.make(findViewById(R.id.rlArea), clib.value(R.string.no_cache, ""), Snackbar.LENGTH_LONG)
                                             .show();
                                     progressDialog.hide();
                                     return;
                                 }
                                 webView.setVisibility(View.INVISIBLE);
-                                if (ptype == db.TYPE_CATEGORISES) {
+                              //  if (ptype == db.TYPE_CATEGORISES) {
                                     webView.loadUrl(clib.decode(pdata));
                                     return;
-                                }
+                                //}
 
-                                String data = pdata;
+                             /*   String data = pdata;
 
                                 if (data.substring(0, 4).equals("http")) {
                                     data = clib.decode(clib.webData(data));
@@ -865,7 +865,7 @@ public class Main extends AppCompatActivity
                                 data = css + jquery + header + data;
 
                                 webView.loadDataWithBaseURL(ptype + "__" + pid, data, "text/html; charset=utf-8", "utf-8", ptype + "_cached_" + pid);
-                            } catch (Exception e) {
+                          */  } catch (Exception e) {
                                 clib.err(2000, e);
                             }
                         }
