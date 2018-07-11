@@ -89,8 +89,28 @@ public class cproject {
                 sum += "</div></div></div></div></div></body></html>";
 
                 return sum;
-            }Log.e("asda",pdata+"-");
+            }else{
+                Log.e("INFO_CAT","F8");
+                result = clib.search( "<div class='template-page content  av-content-small alpha units'>","<aside", pdata);
 
+                if(!result.equals("")){
+                    Log.e("INFO_cAT", "F2");
+                    String sum = "<body id='top' class='page-template-default page page-id-958 page-parent stretched open_sans arial-websave _arial' itemscope='itemscope' itemtype='https://schema.org/WebPage'>";
+                    sum += "<div id='wrap_all'>";
+                    sum += "<div id='main' class='all_colors' data-scroll-offset='0'>";
+                    sum += "<div id='after_full_slider_1' class='main_color av_default_container_wrap container_wrap sidebar_right'>";
+                    sum += "<div class='container'>";
+                    //   sum += "<div class='template-page content  av-content-small alpha units'>";
+
+                    sum += result;
+
+                    sum += "</div></div></div></div></div></body></html>";
+
+                    return sum;
+                }
+
+            }
+            Log.e("asda",pdata+"-");
             Log.e("INFO_cAT", "G3");
 
             return pdata;
