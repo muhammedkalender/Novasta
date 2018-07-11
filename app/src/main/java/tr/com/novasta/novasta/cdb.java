@@ -111,9 +111,9 @@ public class cdb extends SQLiteOpenHelper {
 
     public Cursor reference(int ID) {
         if (ID == -1) {
-            return cursor("SELECT ID, IMAGE_LIST, TITLE, DATE, DESCRIPTION FROM 'references' WHERE ACTIVE = 1 ORDER BY ID desc");
+            return cursor("SELECT ID, IMAGE, TITLE, DATE, DESCRIPTION FROM 'references' WHERE ACTIVE = 1 ORDER BY ID desc");
         } else {
-            return cursor("SELECT ID, IMAGE_LIST, TITLE, DATE, DESCRIPTION FROM 'references' WHERE ID = " + ID + " AND ACTIVE = 1 ORDER BY ID desc");
+            return cursor("SELECT ID, IMAGE, TITLE, DATE, DESCRIPTION FROM 'references' WHERE ID = " + ID + " AND ACTIVE = 1 ORDER BY ID desc");
         }
     }
 
@@ -352,11 +352,13 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     public Cursor searchInCategories(String LIKE) {
-        return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
+       // return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
+        return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
     }
 
     public Cursor searchInReferences(String LIKE) {
-        return cursor("SELECT ID, TITLE, IMAGE_LIST, DESCRIPTION, DATE FROM 'references' WHERE ACTIVE = 1 AND title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%' OR date LIKE '%" + LIKE + "%'  ORDER BY ID DESC");
+        //return cursor("SELECT ID, TITLE, IMAGE, DESCRIPTION, DATE FROM 'references' WHERE ACTIVE = 1 AND title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%' OR date LIKE '%" + LIKE + "%'  ORDER BY ID DESC");
+        return cursor("SELECT ID, TITLE, IMAGE, DESCRIPTION, DATE FROM 'references' WHERE ACTIVE = 1 AND title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR date LIKE '%" + LIKE + "%'  ORDER BY ID DESC");
     }
 
     public boolean categorises(int ID, String HTML) {

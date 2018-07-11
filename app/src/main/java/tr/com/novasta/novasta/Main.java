@@ -811,7 +811,7 @@ public class Main extends AppCompatActivity
                                 //if (data.length() > 4 && data.substring(0, 4).equals("http")) {
                                 if (!db.cache(pid, ptype)) {
                                     data = db.url(pid, ptype);
-
+Log.e("asda","S4");
                                     if (data.equals("")) {
                                         //todo
                                     }

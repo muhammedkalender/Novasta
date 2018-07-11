@@ -70,35 +70,28 @@ public class cproject {
 
     String htmlcategorises(String pdata) {
         try {
-            String patternstart = "<main";
-            String patternend = "</main>";
 
-            Pattern pattern = Pattern.compile(Pattern.quote(patternstart) + "(.*?)" + Pattern.quote(patternend));
+            Log.e("INFO_cAT", "G1");
 
-            Matcher matcher = pattern.matcher(pdata);
+            String result = clib.search("<main", "</main>", pdata);
 
-
-            patternstart = "<div class='template-page content  av-content-small alpha units";
-            patternend = "<aside'";
-
-            pattern = Pattern.compile(Pattern.quote(patternstart) + "(.*?)" + Pattern.quote(patternend));
-            matcher = pattern.matcher(pdata);
-
-            if (matcher.find()) {
+            if (!result.equals("")) {
+                Log.e("INFO_cAT", "2G");
                 String sum = "<body id='top' class='page-template-default page page-id-958 page-parent stretched open_sans arial-websave _arial' itemscope='itemscope' itemtype='https://schema.org/WebPage'>";
                 sum += "<div id='wrap_all'>";
                 sum += "<div id='main' class='all_colors' data-scroll-offset='0'>";
-                 sum += "<div id='after_full_slider_1' class='main_color av_default_container_wrap container_wrap sidebar_right'>";
-                 sum += "<div class='container'>";
+                sum += "<div id='after_full_slider_1' class='main_color av_default_container_wrap container_wrap sidebar_right'>";
+                sum += "<div class='container'>";
                 //   sum += "<div class='template-page content  av-content-small alpha units'>";
 
-                sum += matcher.group(0).replace("<div class='container_wrap footer_color'", "");
+                sum += result;
 
                 sum += "</div></div></div></div></div></body></html>";
 
                 return sum;
+            }Log.e("asda",pdata+"-");
 
-            }
+            Log.e("INFO_cAT", "G3");
 
             return pdata;
         } catch (Exception e) {
