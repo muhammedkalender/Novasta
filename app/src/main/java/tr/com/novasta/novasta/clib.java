@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class clib {
     public static Context context;
@@ -107,6 +109,28 @@ public class clib {
         } catch (Exception e) {
             err(2569, e);
             return TEXT;
+        }
+    }
+
+    public static String search(String pstart, String pend, String pdata) {
+        try {
+            String patternstart = encode(pstart);
+            String patternend = encode(pend);
+
+            Pattern pattern = Pattern.compile(Pattern.quote(patternstart) + "(.*?)" + Pattern.quote(patternend));
+
+            Matcher matcher = pattern.matcher(encode(pdata));
+
+            if (matcher.find()) {
+                String result = matcher.group(0);
+
+                return decode(result);
+            }
+
+            return "";
+        } catch (Exception e) {
+            clib.err(2563, e);
+            return "";
         }
     }
 

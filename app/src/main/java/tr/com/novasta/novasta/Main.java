@@ -733,9 +733,10 @@ public class Main extends AppCompatActivity
             if (webView == null) {
                 webView = findViewById(R.id.wvbrowser);
                 webView.getSettings().setAppCacheEnabled(true);
-                webView.getSettings().setAppCacheMaxSize(1024 *1024* 50); //50 MB
+                webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 50); //50 MB
                 webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 webView.getSettings().setJavaScriptEnabled(true);
+                webView.addJavascriptInterface(new cjs(), "android");
                 webView.getSettings().setLoadsImagesAutomatically(true);
                 webView.setWebViewClient(new WebViewClient() {
 
@@ -771,7 +772,7 @@ public class Main extends AppCompatActivity
                         //webView.setVisibility(View.VISIBLE);
                         findViewById(R.id.wvfather).setVisibility(View.VISIBLE);
                         webView.bringToFront();
-                        webView.scrollTo(0,0);
+                        webView.scrollTo(0, 0);
                         rvMain.setVisibility(View.INVISIBLE);
 
                         if (((RelativeLayout) findViewById(R.id.rlSearch)).getVisibility() == View.VISIBLE) {
@@ -787,19 +788,19 @@ public class Main extends AppCompatActivity
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                        try {
-                                            webView.setVisibility(View.VISIBLE);
-                                            progressDialog.hide();
-                                        }catch (Exception e){
-                                            clib.err(2589,e);
-                                        }
+                                            try {
+                                                webView.setVisibility(View.VISIBLE);
+                                                progressDialog.hide();
+                                            } catch (Exception e) {
+                                                clib.err(2589, e);
+                                            }
                                         }
                                     });
 
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 } catch (Exception e) {
-                                    clib.err(2563,e);
+                                    clib.err(2563, e);
                                 }
                             }
                         }).start();
@@ -819,24 +820,19 @@ public class Main extends AppCompatActivity
                             try {
                                 //todo
 
-                                if (!isInternetAvailable() && !db.cache(pid, ptype) && false) { //todo
+                                if (!isInternetAvailable() && !db.cache(pid, ptype)) { //todo
                                     Snackbar.make(findViewById(R.id.rlArea), clib.value(R.string.no_cache, ""), Snackbar.LENGTH_LONG)
                                             .show();
                                     progressDialog.hide();
                                     return;
                                 }
                                 webView.setVisibility(View.INVISIBLE);
-                              //  if (ptype == db.TYPE_CATEGORISES) {
-                                    webView.loadUrl(clib.decode(pdata));
-                                    return;
-                                //}
+                                String data = pdata;
 
-                             /*   String data = pdata;
-
-                                if (data.substring(0, 4).equals("http")) {
+                                if (data.length() > 4 && data.substring(0, 4).equals("http")) {
                                     data = clib.decode(clib.webData(data));
 
-                                    if (ptype == db.TYPE_NEWS) {
+                                   if (ptype == db.TYPE_NEWS) {
                                         data = project.htmlnews(data);
                                     } else if (ptype == db.TYPE_REFERENCES) {
                                         data = project.htmlreferences(data);
@@ -844,7 +840,7 @@ public class Main extends AppCompatActivity
                                         data = project.htmlcategorises(data);
                                     }
 
-                                    //todo db.content(pid, ptype, data);
+                                     db.content(pid, ptype, data);
                                     db.description(pid, ptype, project.metadescription(data));
                                 } else {
                                     data = clib.decode(data);
@@ -865,7 +861,7 @@ public class Main extends AppCompatActivity
                                 data = css + jquery + header + data;
 
                                 webView.loadDataWithBaseURL(ptype + "__" + pid, data, "text/html; charset=utf-8", "utf-8", ptype + "_cached_" + pid);
-                          */  } catch (Exception e) {
+                            } catch (Exception e) {
                                 clib.err(2000, e);
                             }
                         }

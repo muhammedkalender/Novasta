@@ -141,11 +141,17 @@ public class cdb extends SQLiteOpenHelper {
 
     void cache(int pid, int ptype, boolean pedit) {
         if (ptype == TYPE_CATEGORISES) {
+            Log.e("B", cache(pid,ptype)+"");
             cacheCategorises(pid, pedit);
+            Log.e("A", cache(pid,ptype)+"");
         } else if (ptype == TYPE_NEWS) {
+            Log.e("B", cache(pid,ptype)+"");
             cacheNews(pid, pedit);
+            Log.e("a", cache(pid,ptype)+"");
         } else if (ptype == TYPE_REFERENCES) {
+            Log.e("B", cache(pid,ptype)+"");
             cacheReferences(pid, pedit);
+            Log.e("a", cache(pid,ptype)+"");
         }
     }
 

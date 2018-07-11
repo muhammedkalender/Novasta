@@ -123,19 +123,14 @@ public class cproject {
     String metadescription(String pdata) {
         try {
             //todo
-            String patternstart = "<meta name=\"description\"  content=\"";
-            String patternend = "a";
 
-            Pattern pattern = Pattern.compile(Pattern.quote(patternstart) + "(.*?)" + Pattern.quote(patternend));
+            String search = clib.search("e", "a", pdata);
 
-            Matcher matcher = pattern.matcher(pdata);
+            if (!search.equals("")) {
+                //result = result.replaceAll("<meta name=\"twitter:description\" content=\"", "");
+                //result = result.replaceAll("\" />", "");
 
-            if (matcher.find()) {
-                String result = matcher.group(0);
-                result = result.replaceAll("<meta name=\"twitter:description\" content=\"", "");
-                result = result.replaceAll("\" />", "");
-
-                return result;
+                return search;
             }
 
             return "";
