@@ -89,10 +89,10 @@ public class cproject {
                 sum += "<div id='wrap_all'>";
                 sum += "<div id='main' class='all_colors' data-scroll-offset='0'>";
                  sum += "<div id='after_full_slider_1' class='main_color av_default_container_wrap container_wrap sidebar_right'>";
-                // sum += "<div class='container'>";
+                 sum += "<div class='container'>";
                 //   sum += "<div class='template-page content  av-content-small alpha units'>";
 
-              //  sum += matcher.group(0).replace("<div class='container_wrap footer_color'", "");
+                sum += matcher.group(0).replace("<div class='container_wrap footer_color'", "");
 
                 sum += "</div></div></div></div></div></body></html>";
 

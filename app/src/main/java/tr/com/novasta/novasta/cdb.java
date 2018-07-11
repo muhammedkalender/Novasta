@@ -125,6 +125,18 @@ public class cdb extends SQLiteOpenHelper {
         return integer("SELECT counter FROM news WHERE id =" + ID, 0);
     }
 
+    String url(int pid, int ptype){
+        if (ptype == TYPE_CATEGORISES) {
+           return categorises(pid, "url","");
+        } else if (ptype == TYPE_NEWS) {
+            return news(pid,"url","");
+        } else if (ptype == TYPE_REFERENCES) {
+            return reference(pid,"url","");
+        }else{
+            return "";
+        }
+    }
+
     int TYPE_CATEGORISES = 1, TYPE_NEWS = 2, TYPE_REFERENCES = 3;
 
     boolean cache(int pid, int ptype) {
@@ -138,6 +150,8 @@ public class cdb extends SQLiteOpenHelper {
 
         return false;
     }
+
+
 
     void cache(int pid, int ptype, boolean pedit) {
         if (ptype == TYPE_CATEGORISES) {

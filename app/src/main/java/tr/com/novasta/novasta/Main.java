@@ -736,7 +736,7 @@ public class Main extends AppCompatActivity
                 webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 50); //50 MB
                 webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 webView.getSettings().setJavaScriptEnabled(true);
-                webView.addJavascriptInterface(new cjs(), "android");
+                //webView.addJavascriptInterface(new cjs(), "android");
                 webView.getSettings().setLoadsImagesAutomatically(true);
                 webView.setWebViewClient(new WebViewClient() {
 
@@ -760,14 +760,15 @@ public class Main extends AppCompatActivity
                     db.cacheReferences(ID, true);
                                      */
 
-                        for (int i = 0; i < elements.length + clases.length; i++) {
+                     /*   for (int i = 0; i < elements.length + clases.length; i++) {
                             if (i < elements.length) {
                                 view.loadUrl("javascript:document.getElementById('" + elements[i] + "').remove();");
                             } else {
                                 view.loadUrl("javascript:document.getElementsByClassName('" + clases[i - elements.length] + "')[0].remove();");
                             }
                         }
-
+*/
+                        //todo todo todo cache image için cacheyi lsitle reism olmayanalrı sil :)
                         webView.setScrollX(0);
                         //webView.setVisibility(View.VISIBLE);
                         findViewById(R.id.wvfather).setVisibility(View.VISIBLE);
@@ -780,31 +781,9 @@ public class Main extends AppCompatActivity
                         }
                         db.cache(pid, ptype, true);
 
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(1000);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                webView.setVisibility(View.VISIBLE);
-                                                progressDialog.hide();
-                                            } catch (Exception e) {
-                                                clib.err(2589, e);
-                                            }
-                                        }
-                                    });
 
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (Exception e) {
-                                    clib.err(2563, e);
-                                }
-                            }
-                        }).start();
-                        ;
+                        webView.setVisibility(View.VISIBLE);
+                        progressDialog.hide();
 
 
                     }
@@ -829,10 +808,17 @@ public class Main extends AppCompatActivity
                                 webView.setVisibility(View.INVISIBLE);
                                 String data = pdata;
 
-                                if (data.length() > 4 && data.substring(0, 4).equals("http")) {
+                                //if (data.length() > 4 && data.substring(0, 4).equals("http")) {
+                                if (!db.cache(pid, ptype)) {
+                                    data = db.url(pid, ptype);
+
+                                    if (data.equals("")) {
+                                        //todo
+                                    }
+
                                     data = clib.decode(clib.webData(data));
 
-                                   if (ptype == db.TYPE_NEWS) {
+                                    if (ptype == db.TYPE_NEWS) {
                                         data = project.htmlnews(data);
                                     } else if (ptype == db.TYPE_REFERENCES) {
                                         data = project.htmlreferences(data);
@@ -840,7 +826,10 @@ public class Main extends AppCompatActivity
                                         data = project.htmlcategorises(data);
                                     }
 
-                                     db.content(pid, ptype, data);
+                                    if (db.content(pid, ptype, data)) {
+                                        db.cache(pid, ptype, true);
+                                    }
+
                                     db.description(pid, ptype, project.metadescription(data));
                                 } else {
                                     data = clib.decode(data);
