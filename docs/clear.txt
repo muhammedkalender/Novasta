@@ -1,0 +1,16 @@
+<script>
+
+var vclasses = ["stretch_full container_wrap alternate_color dark_bg_color title_container"];
+var velements = ["socket"];
+
+for(var i = 0; i < vclasses.lenght + velements.lenght; i++){
+	if(i < vclaseses.lenght){
+		document.getElementsByClassName(vclasses[i])[0].remove();
+	}else{
+		document.getElementById(velements[i]).remove();
+	}
+}
+
+android.show();
+
+</script>

@@ -53,21 +53,24 @@ public class Main extends AppCompatActivity
 
     WebView webView;
     ProgressDialog progressDialog;
-
+    int lastType;
+    int lastId;
     cdb db;
     cproject project;
-
+    boolean redirect;
     RelativeLayout rlmain;
 
     RecyclerView rvMain, rvSearch;
     String[] elements = {
-            "full_slider_1",
+
             "header_main",
             "header_meta",
+            "full_slider_1",
             "footer",
             "footer",
             "socket",
-            "scroll-top-link"
+            "scroll-top-link",
+            "recommend_android"
     };
 
     String[] clases = {
@@ -75,7 +78,7 @@ public class Main extends AppCompatActivity
             "sidebar sidebar_right smartphones_sidebar_active alpha units",
             "hr hr-custom hr-center hr-icon-no   avia-builder-el-26  el_after_av_heading  el_before_av_postslider",
             "hr hr-custom hr-left hr-icon-no   avia-builder-el-24  el_after_av_one_half  el_before_av_heading",
-            "av-special-heading-tag",
+            //"av-special-heading-tag",
             "avia-content-slider avia-content-slider-active avia-content-slider1 avia-content-slider-even  avia-builder-el-27  el_after_av_hr  avia-builder-el-last",
             "stretch_full container_wrap alternate_color dark_bg_color title_container",
             "comment_container",
@@ -304,23 +307,43 @@ public class Main extends AppCompatActivity
                             return;
                         }
 
-                        String keyword = etOnSearch.getText().toString();
 
-                        List<Item> items = buildSearch(db.searchInReferences(keyword), db.searchInNews(keyword), db.searchInCategories(keyword));
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Log.e("asda", "O6");
+                                    String keyword = etOnSearch.getText().toString();
 
-                        itemsSearch.clear();
-
-
-                        for (int i = 0; i < items.size(); i++) {
-                            itemsSearch.add(items.get(i));
-                        }
-
-                        if (items.size() == 0) {
-                            itemsSearch.add(new Item(0, clib.value(R.string.nothing_header, ""), clib.value(R.string.nothing, ""), " ", "", "", -1));
-
-                        }
-
-                        rvSearch.setAdapter(recyclerAdapter);
+                                    List<Item> items = buildSearch(db.searchInReferences(keyword), db.searchInNews(keyword), db.searchInCategories(keyword));
+                                    Log.e("asda", "O4");
+                                    itemsSearch.clear();
+                                    Log.e("asda", "O5");
+                                    Log.e("asda", "O2");
+                                    for (int i = 0; i < items.size(); i++) {
+                                        itemsSearch.add(items.get(i));
+                                    }
+                                    Log.e("asda", "O1");
+                                    if (items.size() == 0) {
+                                        itemsSearch.add(new Item(0, clib.value(R.string.nothing_header, ""), clib.value(R.string.nothing, ""), " ", "", "", -1));
+                                    }
+                                    Log.e("asda", "O3");
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                rvSearch.setAdapter(recyclerAdapter);
+                                            } catch (Exception e) {
+                                                clib.err(29653, e);
+                                            }
+                                        }
+                                    });
+                                    Log.e("asda", "O12");
+                                } catch (Exception e) {
+                                    clib.err(2596, e);
+                                }
+                            }
+                        }).start();
                     } catch (Exception e) {
                         clib.err(2569, e);
                     }
@@ -741,17 +764,35 @@ public class Main extends AppCompatActivity
                 webView.setWebViewClient(new WebViewClient() {
 
                     @Override
-                    public void onPageFinished(WebView view, String url) {
-                                    /*super.onPageFinished(view, url);
+                    public void onPageFinished(final WebView view, String url) {
+                        super.onPageFinished(view, url);
 
-                                    for (int i = 0; i < elements.length + clases.length; i++) {
-                        if (i < elements.length) {
-                            view.loadUrl("javascript:document.getElementById('" + elements[i] + "').remove();");
-                        } else {
-                            view.loadUrl("javascript:document.getElementsByClassName('" + clases[i - elements.length] + "')[0].remove();");
+                        if (redirect) {
+                            return;
                         }
-                    }
 
+                        lastType = ptype;
+                        lastId = pid;
+
+                        view.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    for (int i = 0; i < elements.length + clases.length; i++) {
+                                        if (i < elements.length) {
+                                            view.loadUrl("javascript:document.getElementById('" + elements[i] + "').remove();");
+                                        } else {
+                                            view.loadUrl("javascript:document.getElementsByClassName('" + clases[i - elements.length] + "')[0].remove();");
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    clib.err(2596, e);
+                                }
+                            }
+                        });
+
+
+/*
                     finished = true;
                     lastType = 1;
                     lastReferences = ID;
@@ -769,7 +810,7 @@ public class Main extends AppCompatActivity
                         }
 */
                         //todo todo todo cache image için cacheyi lsitle reism olmayanalrı sil :)
-                        webView.setScrollX(0);
+
                         //webView.setVisibility(View.VISIBLE);
                         findViewById(R.id.wvfather).setVisibility(View.VISIBLE);
                         webView.bringToFront();
@@ -781,11 +822,31 @@ public class Main extends AppCompatActivity
                         }
                         db.cache(pid, ptype, true);
 
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(500);//Thread.sleep(1500);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                webView.setVisibility(View.VISIBLE);
+                                                progressDialog.hide();
+                                            } catch (Exception e) {
+                                                clib.err(2157, e);
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    clib.err(2563, e);
+                                }
+                            }
+                        }).start();
+                        ;
 
-                        webView.setVisibility(View.VISIBLE);
-                        progressDialog.hide();
 
-
+                        redirect = true;
                     }
                 });
             }
@@ -809,9 +870,9 @@ public class Main extends AppCompatActivity
                                 String data = pdata;
 
                                 //if (data.length() > 4 && data.substring(0, 4).equals("http")) {
-                                if (!db.cache(pid, ptype)) {
+                                if (!db.cache(pid, ptype) && false) { //todo
                                     data = db.url(pid, ptype);
-Log.e("asda","S4");
+                                    Log.e("asda", "S4");
                                     if (data.equals("")) {
                                         //todo
                                     }
@@ -834,7 +895,7 @@ Log.e("asda","S4");
                                 } else {
                                     data = clib.decode(data);
                                 }
-
+/*
                                 String css = "<style>" + clib.read("default.css") + "</style>";
                                 String jquery = "<script>" + clib.read("jquery.js") + "</script>";
                                 String header = "";
@@ -847,9 +908,10 @@ Log.e("asda","S4");
                                     header = clib.read("reference_header.html");
                                 }
 
-                                data = css + jquery + header + data;
-
-                                webView.loadDataWithBaseURL(ptype + "__" + pid, data, "text/html; charset=utf-8", "utf-8", ptype + "_cached_" + pid);
+                                data = css + jquery + header + data;*/
+                                redirect = false;
+                                webView.loadUrl(db.url(pid, ptype));
+                                //  webView.loadDataWithBaseURL(ptype + "__" + pid, data, "text/html; charset=utf-8", "utf-8", ptype + "_cached_" + pid);
                             } catch (Exception e) {
                                 clib.err(2000, e);
                             }
