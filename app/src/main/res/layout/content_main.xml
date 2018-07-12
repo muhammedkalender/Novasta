@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:clickable="true"
+    android:layout_height="match_parent"
     android:background="@color/background"
-    android:layout_height="match_parent">
+    android:clickable="true">
 
-
-    <ImageView
-        android:id="@+id/ivHeader"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp" />
 
     <RelativeLayout
         android:id="@+id/rlHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivHeader">
+        android:layout_below="@+id/viewpager">
 
         <TextView
             android:id="@+id/tvHeader1"
@@ -36,12 +35,12 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_toEndOf="@id/tvHeader1"
+            android:layout_toRightOf="@id/tvHeader1"
             android:background="@color/green"
             android:gravity="center_vertical"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
-            android:textSize="18sp"
-            android:layout_toRightOf="@id/tvHeader1" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -54,10 +53,11 @@
     <RelativeLayout
         android:id="@+id/wvfather"
 
-        android:background="@color/text"
-        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/text"
+        android:visibility="invisible">
+
         <WebView
             android:id="@+id/wvbrowser"
             android:layout_width="match_parent"

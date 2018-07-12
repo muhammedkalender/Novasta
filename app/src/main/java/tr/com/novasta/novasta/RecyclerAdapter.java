@@ -47,12 +47,22 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
             holder.title.setText(list.get(position).title);
             holder.card_view.setTag(list.get(position).id);
             holder.description.setText(list.get(position).description);
-            holder.catndate.setText(list.get(position).categoryName+" / "+list.get(position).date);
+
+            if (list.get(position).date != null && !list.get(position).date.equals("") && !list.get(position).date.equals("null")) {
+                holder.catndate.setText(list.get(position).categoryName + " / " + list.get(position).date);
+            } else {
+                if (list.get(position).categoryName != null && !list.get(position).categoryName.equals("") && !list.get(position).categoryName.equals("null")) {
+                    holder.catndate.setText(list.get(position).categoryName);
+                } else {
+                    holder.catndate.setText("");
+                }
+            }
+
             clib.glide(list.get(position).image, holder.image);
         } catch (IllegalArgumentException ex) {
-           clib.err(450, ex);
+            clib.err(450, ex);
         } catch (Exception ex) {
-           clib.err(458, ex);
+            clib.err(458, ex);
         }
     }
 
@@ -68,9 +78,10 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        try{
-            super.onAttachedToRecyclerView(recyclerView);}catch (Exception e){
-           clib.err(256,e);
+        try {
+            super.onAttachedToRecyclerView(recyclerView);
+        } catch (Exception e) {
+            clib.err(256, e);
         }
     }
 

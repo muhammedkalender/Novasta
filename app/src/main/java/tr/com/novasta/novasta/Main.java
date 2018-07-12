@@ -11,9 +11,11 @@ import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -43,6 +46,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -253,7 +257,7 @@ public class Main extends AppCompatActivity
 
             return result;
         } catch (Exception e) {
-            clib.err(2596, e);
+            clib.err(22596, e);
             return null;
         }
     }
@@ -340,7 +344,7 @@ public class Main extends AppCompatActivity
                                     });
                                     Log.e("asda", "O12");
                                 } catch (Exception e) {
-                                    clib.err(2596, e);
+                                    clib.err(25896, e);
                                 }
                             }
                         }).start();
@@ -500,6 +504,10 @@ public class Main extends AppCompatActivity
 
     void item(Item ITEM) {
         try {
+            if (ITEM.id == 0) {
+                return;
+            }
+
             progressDialog.show();
             if (ITEM.isReference) {
                 loadreferences(ITEM.id);
@@ -528,6 +536,11 @@ public class Main extends AppCompatActivity
         }
     }
 
+    boolean splashscreen = true;
+    int splashtime = 5000;
+    ViewPager viewpager;
+    String slides;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -535,9 +548,21 @@ public class Main extends AppCompatActivity
 
 
         clib.context = getApplicationContext();
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    findViewById(R.id.splashscreen).setVisibility(View.INVISIBLE);
+                } catch (Exception e) {
+                    //todo loadingi vfelan kapatma
+                    clib.err(2563, e);
+                }
+            }
+        }, splashtime);
         db = new cdb(clib.context);
         project = new cproject();
-
         if (clib.config("first_open", 0) == 0) {
             try {
                 String sql = clib.read("db.sql");
@@ -577,6 +602,16 @@ public class Main extends AppCompatActivity
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.scrollToPosition(0);
 
+
+        //todo
+        String images[] = new String[4];
+        images[0] = "https://pbs.twimg.com/profile_images/875749462957670400/T0lwiBK8_400x400.jpg";
+        images[1] = "http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png";
+        images[2] = "asdas";
+        images[3] = "https://smallbusinessbc.ca/wp-content/themes/sbbcmain/images/circle-icons/icon-education.svg";
+
+        viewpager = findViewById(R.id.viewpager);
+        viewpager.setAdapter(new cslide(images));
 
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(items, new RecyclerAdapter.ItemListener() {
             @Override
@@ -678,7 +713,7 @@ public class Main extends AppCompatActivity
 
 
         ((TextView) findViewById(R.id.tvHeader)).setText(clib.value(R.string.header, ""));
-        clib.glide("file:///android_asset/web.jpg", (ImageView) findViewById(R.id.ivHeader));
+        //clib.glide("file:///android_asset/web.jpg", (ImageView) findViewById(R.id.ivHeader));
 
         buildMenu();
     }
@@ -759,8 +794,9 @@ public class Main extends AppCompatActivity
                 webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 50); //50 MB
                 webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                 webView.getSettings().setJavaScriptEnabled(true);
-                //webView.addJavascriptInterface(new cjs(), "android");
+                webView.addJavascriptInterface(new cjs(), "android");
                 webView.getSettings().setLoadsImagesAutomatically(true);
+
                 webView.setWebViewClient(new WebViewClient() {
 
                     @Override
@@ -786,32 +822,11 @@ public class Main extends AppCompatActivity
                                         }
                                     }
                                 } catch (Exception e) {
-                                    clib.err(2596, e);
+                                    clib.err(24596, e);
                                 }
                             }
                         });
 
-
-/*
-                    finished = true;
-                    lastType = 1;
-                    lastReferences = ID;
-
-
-                    db.cacheReferences(ID, true);
-                                     */
-
-                     /*   for (int i = 0; i < elements.length + clases.length; i++) {
-                            if (i < elements.length) {
-                                view.loadUrl("javascript:document.getElementById('" + elements[i] + "').remove();");
-                            } else {
-                                view.loadUrl("javascript:document.getElementsByClassName('" + clases[i - elements.length] + "')[0].remove();");
-                            }
-                        }
-*/
-                        //todo todo todo cache image için cacheyi lsitle reism olmayanalrı sil :)
-
-                        //webView.setVisibility(View.VISIBLE);
                         findViewById(R.id.wvfather).setVisibility(View.VISIBLE);
                         webView.bringToFront();
                         webView.scrollTo(0, 0);
@@ -820,6 +835,7 @@ public class Main extends AppCompatActivity
                         if (((RelativeLayout) findViewById(R.id.rlSearch)).getVisibility() == View.VISIBLE) {
                             ((RelativeLayout) findViewById(R.id.rlSearch)).setVisibility(View.INVISIBLE);
                         }
+
                         db.cache(pid, ptype, true);
 
                         new Thread(new Runnable() {
@@ -843,10 +859,10 @@ public class Main extends AppCompatActivity
                                 }
                             }
                         }).start();
-                        ;
-
 
                         redirect = true;
+
+                        webView.loadUrl("javascript:android.desc(document.querySelector(\"meta[property='og:description']\").getAttribute(\"content\"));");
                     }
                 });
             }
@@ -891,7 +907,7 @@ public class Main extends AppCompatActivity
                                         db.cache(pid, ptype, true);
                                     }
 
-                                    db.description(pid, ptype, project.metadescription(data));
+
                                 } else {
                                     data = clib.decode(data);
                                 }
@@ -965,4 +981,26 @@ public class Main extends AppCompatActivity
             clib.err(1000, e);
         }
     }
+
+    class cjs implements JavascriptInterface {
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return null;
+        }
+
+        @JavascriptInterface
+        public void result(String pdata) {
+            Log.e("asda", pdata + "-");
+        }
+
+        @JavascriptInterface
+        public void desc(String pdata) {
+            try {
+                db.description(lastId, lastType, clib.encode(pdata));
+            } catch (Exception e) {
+                clib.err(2563, e);
+            }
+        }
+    }
+
 }
