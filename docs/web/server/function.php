@@ -99,6 +99,44 @@
 		return search($DATA, '<meta property="og:image" content="', '" />');
 	}
 
+	function encode($text){
+	$text = str_replace("'", "___!SINGLE_QUOTES!___", $text);
+	
+    $text = str_replace("\"", "___!QUOTES!___", $text);
+
+    $text = str_replace("<", "___!LESS!___", $text);
+
+    $text = str_replace(">", "___!MORE!___", $text);
+
+    $text = str_replace("#", "___!HASTAG!___", $text);
+
+    $text = str_replace(";", "___!SEMICOLON!___", $text);
+
+    $text = str_replace(":", "___!TWO_POINT!___", $text);
+	
+	
+	return $text;
+}
+
+function decode($text){
+	$text = str_replace("___!SINGLE_QUOTES!___","'",  $text);
+	
+    $text = str_replace( "___!QUOTES!___","\"", $text);
+
+    $text = str_replace( "___!LESS!___","<", $text);
+
+    $text = str_replace( "___!MORE!___",">", $text);
+
+    $text = str_replace( "___!HASTAG!___","#", $text);
+
+    $text = str_replace( "___!SEMICOLON!___",";", $text);
+
+    $text = str_replace( "___!TWO_POINT!___",":", $text);
+	
+	return $text;
+
+}
+	
 	function htmlCategorises($DATA){
 		$result = "";
 	

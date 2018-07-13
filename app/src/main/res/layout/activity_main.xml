@@ -60,12 +60,12 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:background="@color/menu_background"
         android:layout_width="wrap_content"
-       android:paddingTop="24dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true">
+        android:background="@color/menu_background"
+        android:fitsSystemWindows="true"
+        android:paddingTop="24dp">
 
         <ScrollView
             android:layout_width="wrap_content"
@@ -80,4 +80,5 @@
         </ScrollView>
 
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

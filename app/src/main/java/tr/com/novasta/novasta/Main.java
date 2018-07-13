@@ -45,6 +45,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.eftimoff.viewpagertransformers.DefaultTransformer;
+import com.eftimoff.viewpagertransformers.ParallaxPageTransformer;
+import com.eftimoff.viewpagertransformers.StackTransformer;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -539,6 +542,7 @@ public class Main extends AppCompatActivity
     boolean splashscreen = true;
     int splashtime = 5000;
     ViewPager viewpager;
+    int slidetime = 10000;
     String slides;
 
     @Override
@@ -554,7 +558,23 @@ public class Main extends AppCompatActivity
             @Override
             public void run() {
                 try {
-                    findViewById(R.id.splashscreen).setVisibility(View.INVISIBLE);
+                    Log.e("asda", "a");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (findViewById(R.id.splashscreen) == null) {
+                                    Log.e("ada", "null");
+                                }
+                                findViewById(R.id.splashscreen).setVisibility(View.INVISIBLE);
+                            } catch (Exception e) {
+                                clib.err(58963, e);
+                            }
+
+                        }
+                    });
+
+                    Log.e("asda", "a1");
                 } catch (Exception e) {
                     //todo loadingi vfelan kapatma
                     clib.err(2563, e);
@@ -612,6 +632,23 @@ public class Main extends AppCompatActivity
 
         viewpager = findViewById(R.id.viewpager);
         viewpager.setAdapter(new cslide(images));
+
+       //todo viewpager.setPageTransformer(true, new DefaultTransformer());
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    viewpager.setCurrentItem((viewpager.getCurrentItem() + 1) % viewpager.getChildCount());
+                    handler.postDelayed(this, slidetime);
+                } catch (Exception e) {
+                    clib.err(863, e);
+                }
+            }
+        };
+
+        handler.postDelayed(runnable, slidetime);
 
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter(items, new RecyclerAdapter.ItemListener() {
             @Override

@@ -30,7 +30,8 @@ class Sync extends BroadcastReceiver {
 
                     long lastDate = db.last("references");
                     //String lastTime = lib.webData("https://novasta.com.tr/mobile.php?p=references_t_" + lastDate);
-                    String lastTime = clib.webData("https://novasta.com.tr/update/reference.txt");
+                    //String lastTime = clib.webData("https://novasta.com.tr/update/reference.txt");
+                    String lastTime = clib.webData("https://novasta.com.tr/mobile/dump_references.txt");
                     if (lastDate == 0) {
                         Log.e("DB BOŞ DÖNDÜ", "DB BOŞ DÖNDÜ");
                         return;
@@ -53,7 +54,7 @@ class Sync extends BroadcastReceiver {
                                 String pieceOQuery[] = query[i].split("_-_-_");
 
                                 //ID, TITLE, FATHER, ACTIVE, IMAGE, CONTENT, FAQS, DATE
-                                if (pieceOQuery.length != 9) {
+                                if (pieceOQuery.length != 7) {
                                     Log.e("UPDATE_REFERENCES", "EKSIK-" + pieceOQuery.length);
                                     continue;
                                 }
@@ -64,15 +65,14 @@ class Sync extends BroadcastReceiver {
 
                                 if (db.checkReferences(Integer.parseInt(pieceOQuery[0]))) {
                                     if (db.exec("UPDATE 'references' SET TITLE = '" + pieceOQuery[1] +
-                                            "', DESCRIPTION = '" + pieceOQuery[2] +
-                                            "', IMAGE_LIST = '" + pieceOQuery[3] +
-                                            "', CONTENT = '" + pieceOQuery[4] +
-                                            "', DATE = '" + pieceOQuery[5] +// "', DATE = '" + pieceOQuery[5].substring(0, pieceOQuery[5].length() - 8) +
-                                            "', ACTIVE = " + pieceOQuery[6] +
-                                            ", CACHE = " + pieceOQuery[7] +
+                                            "', IMAGE = '" + pieceOQuery[2] +
+                                            "', URL = '" + pieceOQuery[3] +
+                                            "', DATE = '" + pieceOQuery[4] +// "', DATE = '" + pieceOQuery[5].substring(0, pieceOQuery[5].length() - 8) +
+                                            "', ACTIVE = " + pieceOQuery[5] +
+                                            ", CACHE = " + pieceOQuery[6] +
                                             " WHERE ID =" + pieceOQuery[0])) {
 
-                                        if (db.last("references", Long.parseLong(pieceOQuery[8]))) {
+                                        if (db.last("references", Long.parseLong(pieceOQuery[7]))) {
                                             Log.e("UPDATE_REFERENCE", "OK");
                                             db.references(Integer.parseInt(pieceOQuery[0]));
                                         } else {
@@ -83,10 +83,10 @@ class Sync extends BroadcastReceiver {
                                     }
                                 } else {
                                     if (db.exec("INSERT INTO 'references' " +
-                                            "(ID, TITLE, DESCRIPTION, IMAGE_LIST, CONTENT, DATE, ACTIVE,CACHE) VALUES " +
-                                            "(" + pieceOQuery[0] + ", '" + pieceOQuery[1] + "','" + pieceOQuery[2] + "','" + pieceOQuery[3] + "','" + pieceOQuery[4] + "','" + pieceOQuery[5] + "'," + pieceOQuery[6] + "," + pieceOQuery[7] + ")")) {
+                                            "(ID, TITLE, IMAGE, URL, DATE, ACTIVE,CACHE) VALUES " +
+                                            "(" + pieceOQuery[0] + ", '" + pieceOQuery[1] + "','" + pieceOQuery[2] + "','" + pieceOQuery[3] + "','" + pieceOQuery[4] + "'," + pieceOQuery[5] + "," + pieceOQuery[6]+ ")")) {
                                         // "(" + pieceOQuery[0] + ", '" + pieceOQuery[1] + "','" + pieceOQuery[2] + "','" + pieceOQuery[3] + "','" + pieceOQuery[4] + "','" + pieceOQuery[5].substring(0, pieceOQuery[5].length() - 8) + "'," + pieceOQuery[6] + "," + pieceOQuery[7] + ")")) {
-                                        if (db.last("references", Long.parseLong(pieceOQuery[8]))) {
+                                        if (db.last("references", Long.parseLong(pieceOQuery[7]))) {
                                             Log.e("INSERT_REFERENCE", "OK");
                                         }
                                     } else {
@@ -115,7 +115,8 @@ class Sync extends BroadcastReceiver {
                     cdb db = new cdb(clib.context);
 
                     long lastDate = db.last("info");
-                    String lastTime = clib.webData("https://widerspiel.com/check.php?i=info_t_" + lastDate);
+                    //String lastTime = clib.webData("https://widerspiel.com/check.php?i=info_t_" + lastDate);
+                    String lastTime = clib.webData("https://novasta.com.tr/mobile/check_i"); //todo
 
                     if (lastDate == 0) {
                         Log.e("DB BOŞ DÖNDÜ", "DB BOŞ DÖNDÜ");
@@ -183,7 +184,8 @@ class Sync extends BroadcastReceiver {
 
                         //  String lastTime = lib.webData("http://192.168.1.35/catout.html");
                         //  String lastTime = lib.webData("https://novasta.com.tr/mobile.php?p=categories_t_" + lastDate);
-                        String lastTime = clib.webData("https://novasta.com.tr/update/cat.txt");
+                        //String lastTime = clib.webData("https://novasta.com.tr/update/cat.txt");
+                        String lastTime = clib.webData("https://novasta.com.tr/mobile/dump_news.txt");
 
                         if (lastDate == 0) {
                             Log.e("CAT_DB_NULL", "N");
@@ -208,12 +210,12 @@ class Sync extends BroadcastReceiver {
                                     String pieceOQuery[] = query[i].split("_-_-_");
 
                                     //ID, TITLE, FATHER, ACTIVE, IMAGE, CONTENT, FAQS, DATE
-                                    if (pieceOQuery.length != 10) {
+                                    if (pieceOQuery.length != 7) {
                                         Log.e("UPDATE", "Bişeyler eksik" + pieceOQuery.length);
                                         continue;
                                     }
 
-                                    for (int x = 0; x < 10; x++) {
+                                    for (int x = 0; x < 7; x++) {
                                         pieceOQuery[x] = clib.encode(pieceOQuery[x]);
                                     }
 
@@ -221,14 +223,10 @@ class Sync extends BroadcastReceiver {
                                         if (db.exec("UPDATE categorises SET TITLE = '" + pieceOQuery[1] +
                                                 "', FATHER = " + pieceOQuery[2] +
                                                 ", ACTIVE = " + pieceOQuery[3] +
-                                                ", IMAGE = '" + pieceOQuery[4] +
-                                                "', CONTENT = '" + pieceOQuery[5] +
-                                                "', FAQS ='" + pieceOQuery[6] +
-                                                "', DESCRIPTION ='" + pieceOQuery[7] +
-                                                "', CACHE = " + pieceOQuery[8] + " WHERE ID =" + pieceOQuery[0])) {
-                                            if (db.last("categorises", Long.parseLong(pieceOQuery[9]))) {
+                                                ", URL = '" + pieceOQuery[4] +
+                                                "', CACHE = " + pieceOQuery[5] + " WHERE ID =" + pieceOQuery[0])) {
+                                            if (db.last("categorises", Long.parseLong(pieceOQuery[6]))) {
                                                 Log.e("UPDATE", "BAŞARILI");
-                                                Log.e("asdas", pieceOQuery[5] + "");
                                                 db.categorises(Integer.parseInt(pieceOQuery[0]));
                                             } else {
                                                 Log.e("UPDATE", "SORUN 2");
@@ -238,8 +236,8 @@ class Sync extends BroadcastReceiver {
                                         }
                                     } else {
                                         if (db.exec("INSERT INTO categorises " +
-                                                "(ID, TITLE, FATHER, ACTIVE, IMAGE, FAQS, CONTENT, DESCRIPTION, CACHE) VALUES " +
-                                                "(" + pieceOQuery[0] + ", '" + pieceOQuery[1] + "'," + pieceOQuery[2] + "," + pieceOQuery[3] + ",'" + pieceOQuery[4] + "','" + pieceOQuery[5] + "','" + pieceOQuery[6] + "','" + pieceOQuery[7] + "'," + pieceOQuery[8] + ")")) {
+                                                "(ID, TITLE, FATHER, ACTIVE, URL, CACHE) VALUES " +
+                                                "(" + pieceOQuery[0] + ", '" + pieceOQuery[1] + "'," + pieceOQuery[2] + "," + pieceOQuery[3] + ",'" + pieceOQuery[4] + "'," + pieceOQuery[5] + ",'" + pieceOQuery[6]  + ")")) {
                                             if (db.last("categorises", Long.parseLong(pieceOQuery[9]))) {
                                                 Log.e("INSER", "BASARILI MI ?");
                                                 Log.e("conrt", pieceOQuery[6] + "");
@@ -296,12 +294,12 @@ class Sync extends BroadcastReceiver {
                                 String pieceOQuery[] = query[i].split("_-_-_");
 
                                 //ID, TITLE, FATHER, ACTIVE, IMAGE, CONTENT, FAQS, DATE
-                                if (pieceOQuery.length != 9) {
+                                if (pieceOQuery.length != 6) {
                                     Log.e("NEWS_UPDATE", "EKSIK" + pieceOQuery.length);
                                     continue;
                                 }
 
-                                for (int x = 0; x < 9; x++) {
+                                for (int x = 0; x < 6; x++) {
                                     pieceOQuery[x] = clib.encode(pieceOQuery[x]);
                                 }
 
@@ -382,7 +380,8 @@ class Sync extends BroadcastReceiver {
                 try {
                     categorises();
                     news();
-                    info();
+                   //todo info();
+                    references();
 
                     db.last("last_time", month);
                 } catch (Exception e) {
