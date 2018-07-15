@@ -753,6 +753,8 @@ public class Main extends AppCompatActivity
         //clib.glide("file:///android_asset/web.jpg", (ImageView) findViewById(R.id.ivHeader));
 
         buildMenu();
+
+        Log.e("asda",db.last("LAST_UPDATE_references")+"-");
     }
 
     @Override

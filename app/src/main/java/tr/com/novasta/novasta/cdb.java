@@ -118,21 +118,21 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     int counterReference(int ID) {
-        return integer("SELECT counter FROM 'references' WHERE ID = " + ID, 0);
+        return 0;//integer("SELECT counter FROM 'references' WHERE ID = " + ID, 0);
     }
 
     int counterNews(int ID) {
-        return integer("SELECT counter FROM news WHERE id =" + ID, 0);
+        return 0;//integer("SELECT counter FROM news WHERE id =" + ID, 0);
     }
 
-    String url(int pid, int ptype){
+    String url(int pid, int ptype) {
         if (ptype == TYPE_CATEGORISES) {
-           return categorises(pid, "url","");
+            return categorises(pid, "url", "");
         } else if (ptype == TYPE_NEWS) {
-            return news(pid,"url","");
+            return news(pid, "url", "");
         } else if (ptype == TYPE_REFERENCES) {
-            return reference(pid,"url","");
-        }else{
+            return reference(pid, "url", "");
+        } else {
             return "";
         }
     }
@@ -152,20 +152,19 @@ public class cdb extends SQLiteOpenHelper {
     }
 
 
-
     void cache(int pid, int ptype, boolean pedit) {
         if (ptype == TYPE_CATEGORISES) {
-            Log.e("B", cache(pid,ptype)+"");
+            Log.e("B", cache(pid, ptype) + "");
             cacheCategorises(pid, pedit);
-            Log.e("A", cache(pid,ptype)+"");
+            Log.e("A", cache(pid, ptype) + "");
         } else if (ptype == TYPE_NEWS) {
-            Log.e("B", cache(pid,ptype)+"");
+            Log.e("B", cache(pid, ptype) + "");
             cacheNews(pid, pedit);
-            Log.e("a", cache(pid,ptype)+"");
+            Log.e("a", cache(pid, ptype) + "");
         } else if (ptype == TYPE_REFERENCES) {
-            Log.e("B", cache(pid,ptype)+"");
+            Log.e("B", cache(pid, ptype) + "");
             cacheReferences(pid, pedit);
-            Log.e("a", cache(pid,ptype)+"");
+            Log.e("a", cache(pid, ptype) + "");
         }
     }
 
@@ -211,7 +210,7 @@ public class cdb extends SQLiteOpenHelper {
                 return exec("UPDATE news SET description = '" + clib.encode(pdata) + "' WHERE id = " + pid);
             }
 
-            Log.e("asda",pid+"--"+ptype+"--)"+pdata);
+            Log.e("asda", pid + "--" + ptype + "--)" + pdata);
 
             return false;
         } catch (Exception e) {
@@ -260,19 +259,19 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     int counterCategorises(int ID) {
-        return integer("SELECT counter FROM categorises WHERE id =" + ID, 0);
+        return 0;//integer("SELECT counter FROM categorises WHERE id =" + ID, 0);
     }
 
     void categorises(int ID) {
-        exec("UPDATE categorises SET counter = counter + 1 WHERE id =" + ID);
+      //  exec("UPDATE categorises SET counter = counter + 1 WHERE id =" + ID);
     }
 
     void references(int ID) {
-        exec("UPDATE 'references' SET counter = counter + 1 WHERE id =" + ID);
+        //exec("UPDATE 'references' SET counter = counter + 1 WHERE id =" + ID);
     }
 
     void news(int ID) {
-        exec("UPDATE news SET counter = counter + 1 WHERE id =" + ID);
+       // exec("UPDATE news SET counter = counter + 1 WHERE id =" + ID);
     }
 
     boolean checkCategorises(int ID) {
@@ -335,12 +334,18 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     public long last(String TAG) {
-        return longwong("SELECT value FROM sync WHERE tag LIKE '%" + TAG + "%'", 0);
+        try {
+            return longwong("SELECT value FROM info WHERE tag LIKE '%" + TAG + "%'", 0); // Long.parseLong(company(TAG, ""));
+        } catch (Exception e) {
+            clib.err(25449, e);
+            return 0;
+        }
+        //return longwong("SELECT value FROM sync WHERE tag LIKE '%" + TAG + "%'", 0);
     }
 
     public boolean last(String TAG, long WONG) {
         if (last(TAG) < WONG) {
-            return exec("UPDATE sync SET value = " + WONG + " WHERE TAG Like '%" + TAG + "%'");
+            return exec("UPDATE info SET value = " + WONG + " WHERE TAG Like '%" + TAG + "%'");
         } else {
             Log.e("DAHA ESKI BIR ZMAAN VAR", "JUMP JUMP");
             return true;
@@ -348,11 +353,11 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     public String company(String TAG, String DEFAULT) {
-        return string("SELECT VALUE FROM company WHERE tag LIKE '" + TAG + "'", DEFAULT);
+        return string("SELECT VALUE FROM info WHERE tag LIKE '" + TAG + "'", DEFAULT);
     }
 
     public Cursor searchInCategories(String LIKE) {
-       // return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
+        // return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%' OR faqs LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
         return cursor("SELECT ID, TITLE, IMAGE, TITLE FROM categorises WHERE (title LIKE '%" + LIKE + "%' OR description LIKE '%" + LIKE + "%') AND ACTIVE = 1 AND father != 0 ORDER BY ID DESC");
     }
 
@@ -371,6 +376,6 @@ public class cdb extends SQLiteOpenHelper {
     }
 
     public boolean company(String TAG, String VALUE, boolean isEdit) {
-        return exec("UPDATE company SET value = '" + VALUE + "' WHERE tag LIKE '%" + TAG + "%'");
+        return exec("UPDATE info SET value = '" + VALUE + "' WHERE tag LIKE '%" + TAG + "%'");
     }
 }

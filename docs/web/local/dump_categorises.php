@@ -12,7 +12,8 @@
 
 		$line = explode("_-_-_", $line);
 
-		echo "INSERT INTO categorises (ID, TITLE, FATHER, URL, DATE, ACTIVE) VALUES (".$line[0].",'".$line[1]."',".$line[2].",'".$line[6]."','".$line[8]."',".$line[3].");<br>";
+		echo "INSERT INTO categorises (ID, TITLE, FATHER, URL, ACTIVE) VALUES 
+		(".$line[0].",'".$line[1]."',".$line[2].",'".$line[4]."',".$line[3].");<br>";
 	}
 
 ?>

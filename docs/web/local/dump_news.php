@@ -12,7 +12,7 @@
 
 		$line = explode("_-_-_", $line);
 
-		echo "INSERT INTO news (ID, TITLE, DESCRIPTION, URL, DATE, ACTIVE, IMAGE) VALUES (".$line[0].",'".$line[1]."','".$line[2]."','".$line[4]."','".$line[6]."',".$line[5].",'".$line[3]."');<br>";
+		echo "INSERT INTO news (ID, TITLE, URL, DATE, ACTIVE, IMAGE) VALUES (".$line[0].",'".$line[1]."','".$line[3]."','".$line[5]."',".$line[4].",'".$line[2]."');<br>";
 	}
 
 ?>
