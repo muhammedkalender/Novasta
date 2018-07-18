@@ -313,7 +313,7 @@ public class Sync extends BroadcastReceiver {
                                             //  ", DATE ='" + pieceOQuery[6].substring(0, pieceOQuery[6].length() - 8) +
                                             ", DATE ='" + pieceOQuery[5] +
                                             "', CACHE = " + pieceOQuery[6] + " WHERE ID =" + pieceOQuery[0])) {
-                                        Log.e("date", pieceOQuery[7]);
+                                        //Log.e("date", pieceOQuery[7]);
                                        // if (db.last("LAST_UPDATE_news", Long.parseLong(pieceOQuery[7]))) {
                                          //   Log.e("UPDATE", "BAŞARILI");
                                            // db.news(Integer.parseInt(pieceOQuery[0]));
@@ -377,6 +377,7 @@ public class Sync extends BroadcastReceiver {
                 Log.e("GUNCEL", "GUNCEL");
                 return;
             } else {
+                Log.e("a", last+"---"+month);
                 Log.e("asda", "GGL");
                 try {
                     categorises();
@@ -385,6 +386,7 @@ public class Sync extends BroadcastReceiver {
                     references();
 
                     db.last("LAST_UPDATE_last_time", month);
+                    Log.e("ff", String.valueOf(db.last("LAST_UPDATE_last_time")));
                     db.last("LAST_UPDATE_references",month);
                     db.last("LAST_UPDATE_categorises",month);
                     db.last("LAST_UPDATE_news",month);

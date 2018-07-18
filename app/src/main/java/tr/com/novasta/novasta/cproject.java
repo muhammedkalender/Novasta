@@ -70,13 +70,9 @@ public class cproject {
 
     String htmlcategorises(String pdata) {
         try {
-
-            Log.e("INFO_cAT", "G1");
-
             String result = clib.search("<main", "</main>", pdata);
 
             if (!result.equals("")) {
-                Log.e("INFO_cAT", "2G");
                 String sum = "<body id='top' class='page-template-default page page-id-958 page-parent stretched open_sans arial-websave _arial' itemscope='itemscope' itemtype='https://schema.org/WebPage'>";
                 sum += "<div id='wrap_all'>";
                 sum += "<div id='main' class='all_colors' data-scroll-offset='0'>";
@@ -89,12 +85,10 @@ public class cproject {
                 sum += "</div></div></div></div></div></body></html>";
 
                 return sum;
-            }else{
-                Log.e("INFO_CAT","F8");
-                result = clib.search( "<div class='template-page content  av-content-small alpha units'>","<aside", pdata);
+            } else {
+                result = clib.search("<div class='template-page content  av-content-small alpha units'>", "<aside", pdata);
 
-                if(!result.equals("")){
-                    Log.e("INFO_cAT", "F2");
+                if (!result.equals("")) {
                     String sum = "<body id='top' class='page-template-default page page-id-958 page-parent stretched open_sans arial-websave _arial' itemscope='itemscope' itemtype='https://schema.org/WebPage'>";
                     sum += "<div id='wrap_all'>";
                     sum += "<div id='main' class='all_colors' data-scroll-offset='0'>";
@@ -110,8 +104,6 @@ public class cproject {
                 }
 
             }
-            Log.e("asda",pdata+"-");
-            Log.e("INFO_cAT", "G3");
 
             return pdata;
         } catch (Exception e) {
@@ -135,15 +127,12 @@ public class cproject {
 
     String metadescription(String pdata) {
         try {
-            //todo
+            String result = clib.search("<meta property='og:image' content='", "' />", pdata);
+            if (!result.equals("")) {
+                result = result.replaceAll("<meta property='og:image' content='", "");
+                result = result.replaceAll("' />", "");
 
-            String search = clib.search("e", "a", pdata);
-
-            if (!search.equals("")) {
-                //result = result.replaceAll("<meta name=\"twitter:description\" content=\"", "");
-                //result = result.replaceAll("\" />", "");
-
-                return search;
+                return result;
             }
 
             return "";
@@ -155,15 +144,8 @@ public class cproject {
 
     String metaimage(String pdata) {
         try {
-            String patternstart = "<meta property='og:image' content='";
-            String patternend = "' />";
-
-            Pattern pattern = Pattern.compile(Pattern.quote(patternstart) + "(.*?)" + Pattern.quote(patternend));
-
-            Matcher matcher = pattern.matcher(pdata);
-
-            if (matcher.find()) {
-                String result = matcher.group(1);
+            String result = clib.search("<meta property='og:image' content='", "' />", pdata);
+            if (!result.equals("")) {
                 result = result.replaceAll("<meta property='og:image' content='", "");
                 result = result.replaceAll("' />", "");
 

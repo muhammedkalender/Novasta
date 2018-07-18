@@ -32,7 +32,8 @@
                 android:id="@+id/ivOnSearch"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_search" />
+                android:src="@mipmap/ic_search"
+                android:contentDescription="TODO" />
 
 
             <EditText
@@ -41,7 +42,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:hint="@string/write_here"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"
+                android:inputType="" />
         </LinearLayout>
 
 
@@ -74,9 +76,9 @@
             <LinearLayout
                 android:id="@+id/llMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"></LinearLayout>
+                android:visibility="visible" />
         </ScrollView>
 
     </android.support.design.widget.NavigationView>

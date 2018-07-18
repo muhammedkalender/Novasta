@@ -335,6 +335,7 @@ public class cdb extends SQLiteOpenHelper {
 
     public long last(String TAG) {
         try {
+            Log.e("asda","SELECT value FROM info WHERE tag LIKE '%" + TAG + "%'");
             return longwong("SELECT value FROM info WHERE tag LIKE '%" + TAG + "%'", 0); // Long.parseLong(company(TAG, ""));
         } catch (Exception e) {
             clib.err(25449, e);

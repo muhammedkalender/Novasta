@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -45,6 +46,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.eftimoff.viewpagertransformers.DefaultTransformer;
 import com.eftimoff.viewpagertransformers.ParallaxPageTransformer;
 import com.eftimoff.viewpagertransformers.StackTransformer;
@@ -278,8 +280,11 @@ public class Main extends AppCompatActivity
             final RecyclerAdapter recyclerAdapter = new RecyclerAdapter(itemsSearch, new RecyclerAdapter.ItemListener() {
                 @Override
                 public void onItemClick(View v, int position) {
-                    //todo
-                    item(itemsSearch.get(position));
+                    try {
+                        item(itemsSearch.get(position));
+                    } catch (Exception e) {
+                        clib.err(2596, e);
+                    }
                 }
             });
 
@@ -319,22 +324,19 @@ public class Main extends AppCompatActivity
                             @Override
                             public void run() {
                                 try {
-                                    Log.e("asda", "O6");
                                     String keyword = etOnSearch.getText().toString();
 
                                     List<Item> items = buildSearch(db.searchInReferences(keyword), db.searchInNews(keyword), db.searchInCategories(keyword));
-                                    Log.e("asda", "O4");
                                     itemsSearch.clear();
-                                    Log.e("asda", "O5");
-                                    Log.e("asda", "O2");
+
                                     for (int i = 0; i < items.size(); i++) {
                                         itemsSearch.add(items.get(i));
                                     }
-                                    Log.e("asda", "O1");
+
                                     if (items.size() == 0) {
                                         itemsSearch.add(new Item(0, clib.value(R.string.nothing_header, ""), clib.value(R.string.nothing, ""), " ", "", "", -1));
                                     }
-                                    Log.e("asda", "O3");
+
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -345,7 +347,6 @@ public class Main extends AppCompatActivity
                                             }
                                         }
                                     });
-                                    Log.e("asda", "O12");
                                 } catch (Exception e) {
                                     clib.err(25896, e);
                                 }
@@ -558,7 +559,6 @@ public class Main extends AppCompatActivity
             @Override
             public void run() {
                 try {
-                    Log.e("asda", "a");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -573,10 +573,8 @@ public class Main extends AppCompatActivity
 
                         }
                     });
-
-                    Log.e("asda", "a1");
                 } catch (Exception e) {
-                    //todo loadingi vfelan kapatma
+                    progressDialog.hide();
                     clib.err(2563, e);
                 }
             }
@@ -625,15 +623,15 @@ public class Main extends AppCompatActivity
 
         //todo
         String images[] = new String[4];
-        images[0] = "https://pbs.twimg.com/profile_images/875749462957670400/T0lwiBK8_400x400.jpg";
-        images[1] = "http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png";
-        images[2] = "asdas";
-        images[3] = "https://smallbusinessbc.ca/wp-content/themes/sbbcmain/images/circle-icons/icon-education.svg";
+       // images[0] = "https://pbs.twimg.com/profile_images/875749462957670400/T0lwiBK8_400x400.jpg";
+       // images[1] = "http://www.clker.com/cliparts/3/m/v/Y/E/V/small-red-apple-hi.png";
+       // images[2] = "asdas";
+        //todo images[3] = "https://smallbusinessbc.ca/wp-content/themes/sbbcmain/images/circle-icons/icon-education.svg";
 
         viewpager = findViewById(R.id.viewpager);
         viewpager.setAdapter(new cslide(images));
 
-       //todo viewpager.setPageTransformer(true, new DefaultTransformer());
+        //todo viewpager.setPageTransformer(true, new DefaultTransformer());
 
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -754,7 +752,7 @@ public class Main extends AppCompatActivity
 
         buildMenu();
 
-        Log.e("asda",db.last("LAST_UPDATE_references")+"-");
+        Log.e("asda", db.last("LAST_UPDATE_references") + "-");
     }
 
     @Override
@@ -832,11 +830,26 @@ public class Main extends AppCompatActivity
                 webView.getSettings().setAppCacheEnabled(true);
                 webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 50); //50 MB
                 webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.addJavascriptInterface(new cjs(), "android");
                 webView.getSettings().setLoadsImagesAutomatically(true);
 
+                //https://stackoverflow.com/a/7528833
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    // chromium, enable hardware acceleration
+                    webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                } else {
+                    // older android version, disable hardware acceleration
+                    webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+
                 webView.setWebViewClient(new WebViewClient() {
+
+                    @Override
+                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                      Log.e("ERR_CODE", errorCode+"-");
+                    }
 
                     @Override
                     public void onPageFinished(final WebView view, String url) {
@@ -913,8 +926,6 @@ public class Main extends AppCompatActivity
                         @Override
                         public void run() {
                             try {
-                                //todo
-
                                 if (!isInternetAvailable() && !db.cache(pid, ptype)) { //todo
                                     Snackbar.make(findViewById(R.id.rlArea), clib.value(R.string.no_cache, ""), Snackbar.LENGTH_LONG)
                                             .show();
@@ -927,7 +938,7 @@ public class Main extends AppCompatActivity
                                 //if (data.length() > 4 && data.substring(0, 4).equals("http")) {
                                 if (!db.cache(pid, ptype) && false) { //todo
                                     data = db.url(pid, ptype);
-                                    Log.e("asda", "S4");
+
                                     if (data.equals("")) {
                                         //todo
                                     }
